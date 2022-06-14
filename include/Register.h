@@ -2,6 +2,7 @@
 #define REGISTER_H
 
 #include "utils.h"
+#include "PlaneFitting.h"
 #include "GaussComp.h"
 
 class Register{
@@ -18,9 +19,9 @@ EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     vMoments RegEstep(pcl::PointCloud<pcl::PointXYZ>::Ptr tf_cloud);
 
-    vMoments RegEstepStruct(pcl::PointCloud<pcl::PointXYZ>::Ptr tf_cloud);
+    vMoments StructAlignment(pcl::PointCloud<pcl::PointXYZ>::Ptr tf_cloud, Eigen::Matrix4f &T_st);
     
-    Eigen::Matrix4f RegMstep(vMoments &moments);
+    Eigen::Matrix4f RegMstep(vMoments &moments, float& residual);
 
     void accumulate(Eigen::Vector4f& moments, float gamma, const Eigen::Vector3f& z);
 
@@ -32,10 +33,6 @@ public:
 
     Eigen::Matrix3f mMF0;
     
-    //last pose?
-    Eigen::Matrix3f R;
-    Eigen::Vector3f t;
-    
     Eigen::Matrix4f mPose;
 
     std::vector<int> mvNodesFlag;
@@ -43,8 +40,9 @@ public:
 
     int max_tree_level = 3;
     int n_total;
-    int maxiter = 50;
+    int maxiter = 100;
     int plane_num = 0;
 
+    float log_th = 0.8;
 };   
 #endif
