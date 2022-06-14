@@ -25,7 +25,7 @@ git clone https://github.com/liu-jc18/StructRegistration.git
 cd StructRegistration/
 mkdir build
 cd build/
-cmake .. -DCMAKE_BUILD_TYPE=Release-DCMAKE_BUILD_TYPE=Release
+cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j
 ```
 ## 4. Registration Example
