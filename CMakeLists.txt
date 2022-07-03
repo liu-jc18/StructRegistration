@@ -22,15 +22,16 @@ ENDIF(OPENMP_FOUND AND WITH_OPENMP)
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
-
+find_package(yaml-cpp REQUIRED)
 
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/include
 ${EIGEN3_INCLUDE_DIR}
 ${PCL_INCLUDE_DIRS}
+${YAML_CPP_INCLUDE_DIR}
 )
-# 添加Eigen头文件
+
 include_directories( "/usr/include/eigen3" )
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
@@ -44,8 +45,8 @@ src/PlaneFitting.cpp
 
 target_link_libraries(${PROJECT_NAME}
 ${EIGEN3_LIBS}
-# ${PCL_LIBRARY_DIRS}
 ${PCL_LIBRARIES}
+yaml-cpp
 pthread
 )
 link_directories(${PCL_LIBRARY_DIRS})

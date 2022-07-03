@@ -18,15 +18,6 @@ using namespace std;
 #include <Eigen/StdVector>
 using namespace Eigen;
 
-// #include "/usr/include/pcl-1.7/pcl/common/common_headers.h"
-// #include "/usr/include/pcl-1.7/pcl/point_types.h"
-// #include "/usr/include/pcl-1.7/pcl/filters/voxel_grid.h"
-// #include "/usr/include/pcl-1.7/pcl/filters/statistical_outlier_removal.h"
-// #include "/usr/include/pcl-1.7/pcl/visualization/cloud_viewer.h"
-// #include "/usr/include/pcl-1.7/pcl/visualization/pcl_visualizer.h"
-// #include "/usr/include/pcl-1.7/pcl/io/pcd_io.h"
-// #include "/usr/include/pcl-1.7/pcl/io/ply_io.h"
-// #include "/usr/include/pcl-1.7/pcl/common/transforms.h"
 #include <pcl/common/common_headers.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
