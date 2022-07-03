@@ -17,14 +17,11 @@ mWeight(weight),mMean(mean), mCov(cov)
 
     mSqrtdet = std::sqrt(mdet);
 
-    //进行特征值分解，计算eigenvalue，判断是否是palaner
     auto eigen_solver = Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f>(mCov);
 
-    // eigen value 是按照从小到大的顺序排列的
     mValues = eigen_solver.eigenvalues();
     mVectors = eigen_solver.eigenvectors();
     
-    // 1e-2
     if (mValues.x() / mValues.sum() < 1e-2) {
         mbDegenerated = true;
     }

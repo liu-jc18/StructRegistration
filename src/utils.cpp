@@ -100,7 +100,6 @@ void readplaneparam(const std::string& filename,
 
         if(!s.empty()){
             
-            int id;
             float x,y,z,d,w;
             
             std::stringstream ss;
@@ -119,8 +118,6 @@ void readplaneparam(const std::string& filename,
                 MF0 = q.toRotationMatrix();
                 readMF0 = true;
             }else{
-                ss >> id;
-
                 ss >> x;
                 ss >> y;
                 ss >> z;
@@ -135,4 +132,56 @@ void readplaneparam(const std::string& filename,
     }
 
     std::cout << "load piror plane param is done , load "<<vPlanes.size()<<" planes in total \n";
+}
+
+
+void LoadPoseGroundtruth(string str_pose, map<int,vector<float> > & pose ){
+    ifstream file;
+    file.open(str_pose.c_str());
+    int row = 0;
+
+    while(!file.eof())
+    {   
+        string s;
+        getline(file,s);
+
+
+        if( !s.empty() )
+        {
+            stringstream ss;
+            ss << s;
+            float t,tx,ty,tz,qx,qy,qz,qw;
+            ss >> t >> tx >> ty >> tz >> qx >> qy >> qz >> qw;
+            float cur_p[] = {tx,ty,tz,qx,qy,qz,qw};
+            vector<float> v_p;
+            for(int i=0;i<7;i++){
+                v_p.push_back(cur_p[i]);
+            }
+            pose.insert(make_pair(row,v_p));
+        }
+        row ++;
+    }
+}
+
+void LoadPoseGroundtruth(string str_pose, Eigen::Matrix4f& pose ){
+    ifstream file;
+    file.open(str_pose.c_str());
+
+    while(!file.eof())
+    {   
+        string s;
+        getline(file,s);
+
+        if( !s.empty() )
+        {
+            stringstream ss;
+            ss << s;
+            float r1,r2,r3,r4,r5,r6,r7,r8,r9,t1,t2,t3;
+            ss >> r1>>r2>>r3>>r4>>r5>>r6>>r7>>r8>>r9>>t1>>t2>>t3;
+            pose << r1,r2,r3,t1,
+                    r4,r5,r6,t2,
+                    r7,r8,r9,t3,
+                    0.0,0.0,0.0,1.0;
+        }
+    }
 }

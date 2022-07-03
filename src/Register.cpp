@@ -22,7 +22,6 @@ Register::Register(const std::string& GMM_path,const std::string& PlaneFlag_path
 void Register::accumulate(Eigen::Vector4f &moments, float gamma, const Eigen::Vector3f& z){
     moments[0] += gamma;
     moments.tail(3) += gamma * z;
-    // std::get<2>(moments) += gamma * z * z.transpose();
 }
 
 void Register::SetInputCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr source_cloud){
@@ -37,7 +36,6 @@ void Register::run(){
     float last_res = 0;
 
     // This is the traditional EM method 
-
     // for(int iter = 0; iter < maxiter; iter++){
     //     vMoments curMoment = RegEstep(clouds);
     //     float res = 0;
@@ -58,6 +56,9 @@ void Register::run(){
     for(int iter = 0; iter < maxiter; iter++){
         vMoments curMoment;
         float res = 0;
+
+        // std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();  
+
         if(!initFlag){
             T_st.setIdentity();
             curMoment = StructAlignment(clouds,T_st);
@@ -74,7 +75,10 @@ void Register::run(){
             pcl::transformPointCloud(*clouds,*clouds,T_st);
             curMoment = RegEstep(clouds);
         }
-        
+        // std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();  
+        // chrono::duration<double> time_12 = chrono::duration_cast<chrono::duration<double>>(t2-t1);
+        // std::cout << "Time cost each E step : " << time_12.count() << "[sec]" << std::endl;
+
         Eigen::Matrix4f curPose = RegMstep(curMoment,res);
         mPose = curPose * mPose;
 
@@ -85,6 +89,7 @@ void Register::run(){
 
         pcl::transformPointCloud(*clouds,*clouds,curPose);
     }
+    cout<<"Estimated transformation is: "<<endl;
     cout<<mPose<<endl;
 }
 
@@ -111,7 +116,7 @@ vMoments Register::RegEstep(pcl::PointCloud<pcl::PointXYZ>::Ptr tf_cloud){
 
             const float den = gamma.sum();
             if (den > eps) {
-                gamma /= den;   //归一化
+                gamma /= den;  
             } else {
                 gamma.fill(0.0);
             }
@@ -133,7 +138,6 @@ vMoments Register::StructAlignment(pcl::PointCloud<pcl::PointXYZ>::Ptr tf_cloud,
     
     vMoments moments(n_total,Eigen::Vector4f::Zero());
     
-    // TODO using std<set> to deal with "omp parallel for?"
     std::vector<std::vector<int> > vPlanePoints(plane_num);
     std::vector<Vector4f, Eigen::aligned_allocator<Vector4f> > vPlaneParams(plane_num, Vector4f(0.0,0.0,0.0,0.0));
     vector<int> vInlierNum(plane_num,0);

@@ -49,15 +49,14 @@ int fit_plane(const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen:
 
     double residual_error = 0.1;
     bool stop_loop = false;
-    int maximum = 0;  //最大内点数
+    int maximum = 0; 
 
-    //最终内点标识及其残差
     std::vector<bool> inlierFlag(mvPointcloud.size(), false);
     std::vector<double> resids_(mvPointcloud.size(), 10);
     int sample_count = 0;
     int N = 500;
 
-    srand((unsigned int)time(NULL)); //设置随机数种子
+    srand((unsigned int)time(NULL)); 
     std::vector<int> ptsID;
 
     for (unsigned int i = 0; i < mvPointcloud.size(); i++)
@@ -67,9 +66,9 @@ int fit_plane(const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen:
     {
         std::vector<bool> inlierstemp;
         std::vector<double> residualstemp;
-        std::vector<int> ptss; //采样出的id
+        std::vector<int> ptss; 
         int inlier_count = 0;
-        if (!getSample(ptsID, ptss))  //采样3个点（最小点集）
+        if (!getSample(ptsID, ptss)) 
         {
             stop_loop = true;
             continue;
@@ -88,7 +87,7 @@ int fit_plane(const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen:
             continue;
         }
 
-        // ax + by + cz = -1;
+        // plane param is : ax + by + cz = -1;
         Eigen::Matrix3f A;
         Eigen::Vector3f b;
         b << -1,-1,-1;
@@ -121,7 +120,6 @@ int fit_plane(const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen:
             inlierFlag = inlierstemp;
         }        
 
-        // 更新RANSAC迭代次数，以及内点概率
         if (inlier_count == 0)
         {
             N = 500;
@@ -129,7 +127,7 @@ int fit_plane(const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen:
         else
         {
             double epsilon = double(inlier_count) / (double)mvPointcloud.size(); 
-            double p = 0.99; //所有样本中存在1个好样本的概率
+            double p = 0.99; 
             double s = 3.0;
             N = int(log(1.0 - p) / log(1.0 - pow( epsilon , s) ) );
         }        
@@ -147,7 +145,6 @@ int fit_plane(const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen:
         }    
     }
 
-    //利用所有内点重新最小二乘
     if(do_leastsquare)
     {
         Eigen::MatrixXf A(Eigen::MatrixXf::Zero(inliner_size, 3));
@@ -163,7 +160,6 @@ int fit_plane(const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen:
         x_jacobiSvd = A.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b);
         float tx,ty,tz;
         tx = x_jacobiSvd(0,0); ty = x_jacobiSvd(1,0); tz = x_jacobiSvd(2,0);
-        //cout<<"solve the A x = b \n";
         normal_  << tx,ty,tz;
         dist_ = 1.0 / normal_.norm();
         normal_.normalize();

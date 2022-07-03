@@ -2,20 +2,16 @@
 #define GAUSSCOMP_H
 
 #include <string>
-#include "/usr/include/eigen3/Eigen/Core"
-#include "/usr/include/eigen3/Eigen/Geometry"
-#include "/usr/include/eigen3/Eigen/Dense"
-#include "/usr/include/eigen3/Eigen/Eigenvalues"
-#include "/usr/include/eigen3/Eigen/StdVector"
-
 #include <vector>
 #include <map>
-#include <unordered_map>
-#include <unordered_set>
-
-#include<iostream>
-
+#include <iostream>
 #include <memory>
+
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+#include <Eigen/Dense>
+#include <Eigen/Eigenvalues>
+#include <Eigen/StdVector>
 
 using namespace std;
 using namespace Eigen;

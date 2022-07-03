@@ -40,7 +40,7 @@ public:
 
     int max_tree_level = 3;
     int n_total;
-    int maxiter = 100;
+    int maxiter = 200;
     int plane_num = 0;
 
     float log_th = 0.8;
