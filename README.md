@@ -5,7 +5,7 @@ In particular, we proposed an improved E step which leverages the structural reg
 Besides, unlike the existing point cloud registration approaches using structural information, we proposed to cluster coplanar points by associating the point set with degraded GMM, such that the time-consuming processes of plane segmentation and correspondence searching are efficiently replaced.
 
 ## 1. Related Publication
-J. Liu, Y. Liu and Z. Meng. **Point cloud registration leveraging structural regularity in Manhattan world**. *IEEE Robotics and Automation Letters (RA-L),* 2022.
+J. Liu, Y. Liu and Z. Meng. **Point cloud registration leveraging structural regularity in Manhattan world**. *IEEE Robotics and Automation Letters (RA-L),* 2022, doi: 10.1109/LRA.2022.3185782.
 
 ## 2. Prerequisites
 We have tested the library in **Ubuntu 16.04**, but it should be easy to compile in other platforms. A powerful computer (e.g. i7) will ensure real-time performance and provide more stable and accurate results.
@@ -17,6 +17,9 @@ Download and install instructions can be found at: http://eigen.tuxfamily.org. *
 
 ### PCL 
 Download and install instructions can be found at: https://github.com/PointCloudLibrary/pcl. We use the version of 1.7
+
+### YAML-cpp
+Download and install instructions can be found at: https://github.com/jbeder/yaml-cpp.git
 
 ## 3. Building StructRegistration library and examples
 Clone the repository:
@@ -30,9 +33,9 @@ make -j
 ```
 ## 4. Registration Example
 
-Execute the following command. Please change `GMMpath`, `Flagpath` and `Planepath` in demo.cpp to the corresponding path.
+Execute the following command. Please change `GMMpath`, `Flagpath` and `Planepath` in demo.cpp and config file to the corresponding path.
 ```
-./examples/structreg path_to_target_pointcloud path_to_source_pointcloud
+./examples/structreg path_to_config_file
 ```
 
 ## 5. Pre-processing Example
